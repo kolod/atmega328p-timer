@@ -27,3 +27,8 @@
 *.exe
 *.out
 *.app
+*.d
+*.elf
+*.buildinfo
+*.hex
+*.xml
