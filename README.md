@@ -6,3 +6,5 @@ This sketch uses the [TimerOne](http://playground.arduino.cc/Code/Timer1) librar
 
 ![The electrical circuit](https://github.com/kolod/atmega328p-timer/blob/master/hardware/timer.dch.png)
 The electrical circuit of the timer.
+
+You need the [DipTrace](http://diptrace.com/) to edit schematics or PCB designing.
