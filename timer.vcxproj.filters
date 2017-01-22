@@ -16,6 +16,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="timer.ino" />
+    <None Include="LICENSE" />
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="__vm\.timer.vsarduino.h">
