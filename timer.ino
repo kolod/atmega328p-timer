@@ -23,6 +23,7 @@
 #define RELAY        0
 
 // Глобальные переменные
+boolean isAutoShift = true;
 boolean isTimerRunning = false;
 boolean isTimerPaused = false;
 volatile boolean save = false;
@@ -80,6 +81,14 @@ void countDown(int pos) {
 	}
 }
 
+void autoShift() {
+	if (isAutoShift) {
+		while ((time[offset] == 0) && (offset < 2)) {
+			offset++;
+		}
+	}
+}
+
 boolean isTimeElapsed() {
 	return !time[0] && !time[1] && !time[2] && !time[3] && !time[4];
 }
@@ -98,6 +107,7 @@ void decrementSetpoint(int pos) {
 
 void onLeftPressed() {
 	if (isTimerRunning) {
+		isAutoShift = false;
 		if (offset > 0) offset--;
 		cursor = 0;
 	} else {
@@ -111,6 +121,7 @@ void onLeftPressed() {
 
 void onRightPressed() {
 	if (isTimerRunning) {
+		isAutoShift = false;
 		if (offset < 2) offset++;
 		cursor = 0;
 	} else {
@@ -139,14 +150,18 @@ void onStartPressed() {
 
 	if (isTimerPaused) {
 		isTimerPaused = false;
+		cursor = 0;
+		offset = 0;
 	} else if (!isTimerRunning) {
 		memcpy(time, setpoint, sizeof(setpoint));
+		countDown(4);
 		isTimerRunning = true;
 		milliseconds = 0;
+		isAutoShift = true;
+		cursor = 0;
+		offset = 0;
+		autoShift();
 	}
-
-	cursor = 0;
-	offset = 0;
 }
 
 void onStopPressed() {
@@ -228,6 +243,7 @@ void TimerISR() {
 			if (milliseconds > 999) {
 				milliseconds = 0;
 				countDown(4);
+				autoShift();
 				if (isTimeElapsed()) {
 					isTimerRunning = false;
 					digitalWrite(RELAY, LOW);
